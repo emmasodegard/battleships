@@ -10,7 +10,6 @@ function createGameOverScreen(winnerPlayer, language) {
     let menuItems = [
         {
             text: languages[language].play_again, id: menuItemCount++, action: function () {
-                // Transition back to the main menu
                 currentState.next = mainMenuScene;
                 currentState.transitionTo = "Main Menu";
             }
@@ -24,7 +23,6 @@ function createGameOverScreen(winnerPlayer, language) {
         }
     ];
 
-    // Create a title for the Game Over screen
     let title = `${ANSI.TEXT.BOLD}${ANSI.COLOR.YELLOW}${languages[language].game_over}\n\n${ANSI.TEXT.BOLD_OFF}${ANSI.RESET}`;
     title += `${languages[language].player_wins.replace('{player}', winnerPlayer)}\n\n`;
 
@@ -41,7 +39,6 @@ function createGameOverScreen(winnerPlayer, language) {
                 this.next = menu.next;
                 this.transitionTo = menu.transitionTo;
             }
-            // Reset isDrawn to false if the menu needs to redraw
             if (!menu.isDrawn) {
                 this.isDrawn = false;
             }
