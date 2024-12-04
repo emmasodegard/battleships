@@ -1,5 +1,3 @@
-// battleShipsScreen.mjs
-
 import { GAME_BOARD_DIM, FIRST_PLAYER, SECOND_PLAYER } from "../consts.mjs";
 import { print, clearScreen } from "../utils/io.mjs";
 import KeyBoardManager from "../utils/io.mjs";
@@ -39,7 +37,6 @@ function createBattleshipScreen(firstPBoard, secondPBoard, language) {
                 if (shipCell !== 0) {
                     let targetCell = opponentBoard.targets[row][col];
                     if (targetCell !== 'O') {
-                        // This ship part has not been hit yet
                         return false;
                     }
                 }
@@ -57,7 +54,6 @@ function createBattleshipScreen(firstPBoard, secondPBoard, language) {
 
         update: function (dt) {
             if (gameOver) {
-                // Since currentPlayer has not been swapped yet, the opponent is the winner
                 let winnerPlayer = currentPlayer === FIRST_PLAYER ? '2' : '1';
                 let gameOverScreen = createGameOverScreen(winnerPlayer, language);
                 this.next = gameOverScreen;
@@ -66,10 +62,9 @@ function createBattleshipScreen(firstPBoard, secondPBoard, language) {
             }
 
             if (shotProcessed) {
-                // Wait for player to acknowledge the shot result
                 if (KeyBoardManager.isEnterPressed()) {
                     shotProcessed = false;
-                    message = ""; // Clear the message after acknowledgment
+                    message = "";
                     if (!gameOver) {
                         swapPlayer();
                     }
@@ -78,7 +73,6 @@ function createBattleshipScreen(firstPBoard, secondPBoard, language) {
                 return;
             }
 
-            // Handle movement inputs
             if (KeyBoardManager.isUpPressed()) {
                 cursorRow = Math.max(0, cursorRow - 1);
                 this.isDrawn = false;
@@ -101,14 +95,12 @@ function createBattleshipScreen(firstPBoard, secondPBoard, language) {
                 let targetCell = opponentBoard.targets[cursorRow][cursorColumn];
                 if (targetCell === 0) {
                     let shipCell = opponentBoard.ships[cursorRow][cursorColumn];
-                    console.log(`Shot fired at (${cursorRow}, ${cursorColumn}), shipCell: ${shipCell}`); // Debug statement
+                    console.log(`Shot fired at (${cursorRow}, ${cursorColumn}), shipCell: ${shipCell}`);
 
                     if (shipCell !== 0) {
-                        // It's a hit
                         opponentBoard.targets[cursorRow][cursorColumn] = 'O';
                         message = languages[language].hit;
                     } else {
-                        // It's a miss
                         opponentBoard.targets[cursorRow][cursorColumn] = 'X';
                         message = languages[language].miss;
                     }
@@ -117,7 +109,7 @@ function createBattleshipScreen(firstPBoard, secondPBoard, language) {
                         gameOver = true;
                     }
 
-                    shotProcessed = true; // Indicate that a shot has been made
+                    shotProcessed = true;
                     this.isDrawn = false;
                 } else {
                     message = languages[language].already_fired;
@@ -175,7 +167,7 @@ function createBattleshipScreen(firstPBoard, secondPBoard, language) {
                 output += `${languages[language].enter_fire}\n`;
                 if (message) {
                     output += `\n${message}\n`;
-                    message = ""; // Clear the message after displaying
+                    message = "";
                 }
             }
 
